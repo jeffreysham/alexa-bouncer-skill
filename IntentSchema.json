@@ -1,0 +1,41 @@
+{
+  "intents": [
+    {
+      "intent": "AddGuestIntent",
+      "slots": [
+        {
+          "name": "Host",
+          "type": "AMAZON.US_FIRST_NAME"
+        } ,
+        {
+          "name": "Guest",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "BouncerIntent",
+      "slots": [
+        {
+          "name": "Person",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "GuestListIntent"
+    },
+    {
+      "intent": "ClearListsIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}

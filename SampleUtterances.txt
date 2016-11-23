@@ -1,0 +1,11 @@
+AddGuestIntent I am a host. my name is {Host}
+AddGuestIntent add {Guest} to the list
+AddGuestIntent add {Guest} to the party
+AddGuestIntent let {Guest} in
+BouncerIntent my name is {Person}
+BouncerIntent {Person}
+BouncerIntent let me in. I am {Person}
+GuestListIntent Who is on the guest list
+GuestListIntent Who is on the list
+ClearListsIntent Clear the guest and host lists
+ClearListsIntent Clear the lists
