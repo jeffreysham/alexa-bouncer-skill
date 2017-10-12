@@ -1,6 +1,6 @@
 {
   "name": "skill-bouncer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A skill that allows the host to use Alexa like a bouncer for a party",
   "main": "index.js",
   "scripts": {

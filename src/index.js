@@ -1,7 +1,7 @@
 'use strict';
 var Alexa = require('alexa-sdk');
 var Set = require("collections/set");
-var APP_ID = undefined;
+var APP_ID = 'amzn1.ask.skill.187be03d-6395-449d-bce7-bc20d8a646d1';
 
 var partyStrings = {
     "en-US": {
@@ -18,20 +18,17 @@ var partyStrings = {
     }
 };
 
-var ev;
 var guestMap = {};
 var hostMap = {};
-
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
     alexa.resources = partyStrings;
-    ev = event;
 
-    if (!(ev.session.user.userId in guestMap)) {
-        guestMap[ev.session.user.userId] = new Set();
-        hostMap[ev.session.user.userId] = new Set();
+    if (!(event.context.System.user.userId in guestMap)) {
+        guestMap[event.context.System.user.userId] = new Set();
+        hostMap[event.context.System.user.userId] = new Set();
     }
 
     alexa.registerHandlers(handlers);
@@ -44,41 +41,41 @@ var handlers = {
         this.emit(':ask', welcome, welcome);
     },
     'AddGuestIntent': function () {
-        var host = ev.request.intent.slots.Host.value;
-        var guest = ev.request.intent.slots.Guest.value;
+        var host = this.event.request.intent.slots.Host.value;
+        var guest = this.event.request.intent.slots.Guest.value;
 
-        var hostList = hostMap[ev.session.user.userId];
-        var guestList = guestMap[ev.session.user.userId];
+        var hostList = hostMap[this.event.context.System.user.userId];
+        var guestList = guestMap[this.event.context.System.user.userId];
 
         if (host) {
-            this.emit(':tell', 'Welcome to the party, ' + host);
+            this.emit(':ask', 'Welcome to the party, ' + host, 'What else can I help you with?');
             hostList.add(host);
         } else if (guest) {
             if (guestList.has(guest)) {
-                this.emit(':tell', guest + ' is already on the guest list.');
+                this.emit(':ask', guest + ' is already on the guest list.', 'What else can I help you with?');
             } else {
-                this.emit(':tell', guest + this.t("ADD_GUEST_MESSAGE"));
+                this.emit(':ask', guest + this.t("ADD_GUEST_MESSAGE"), 'What else can I help you with?');
                 guestList.add(guest);
             }
         } else {
-            this.emit(':tell', 'Please repeat your message again.');
+            this.emit(':ask', 'Please repeat your message again.', 'Please repeat your message again.');
         }
     },
     'BouncerIntent': function () {
-        var person = ev.request.intent.slots.Person.value;
+        var person = this.event.request.intent.slots.Person.value;
 
-        var hostList = hostMap[ev.session.user.userId];
-        var guestList = guestMap[ev.session.user.userId];
+        var hostList = hostMap[this.event.context.System.user.userId];
+        var guestList = guestMap[this.event.context.System.user.userId];
 
         if (guestList.has(person) || hostList.has(person)) {
-            this.emit(':tell', 'You are on the list. Welcome to the party!');
+            this.emit(':ask', 'You are on the list. Welcome to the party!', 'What else can I help you with?');
         } else {
-            this.emit(':tell', this.t("PERSON_REJECTED_MESSAGE"));
+            this.emit(':ask', this.t("PERSON_REJECTED_MESSAGE"), this.t("PERSON_REJECTED_MESSAGE"));
         }
     },
     'GuestListIntent': function () {
-        var hostList = hostMap[ev.session.user.userId];
-        var guestList = guestMap[ev.session.user.userId];
+        var hostList = hostMap[this.event.context.System.user.userId];
+        var guestList = guestMap[this.event.context.System.user.userId];
 
         var guestString = '';
         var guestArray = guestList.toArray();
@@ -93,21 +90,21 @@ var handlers = {
                 preposition = 'and';
             }
             guestString += preposition + ' ' + guestArray[i];
-            this.emit(':tell', 'The guest list has the following people. ' + guestString);
+            this.emit(':ask', 'The guest list has the following people. ' + guestString, 'What else can I help you with?');
         } else {
-            this.emit(':tell', 'There are no guests on the list.');
+            this.emit(':ask', 'There are no guests on the list.', 'What else can I help you with?');
         }
     },
     'ClearListsIntent': function () {
-        var hostList = hostMap[ev.session.user.userId];
-        var guestList = guestMap[ev.session.user.userId];
+        var hostList = hostMap[this.event.context.System.user.userId];
+        var guestList = guestMap[this.event.context.System.user.userId];
 
         if (guestList.size > 0 || hostList.size > 0) {
             guestList.clear();
             hostList.clear();
-            this.emit(':tell', 'The guest and host lists were cleared.');
+            this.emit(':ask', 'The guest and host lists were cleared.', 'What else can I help you with?');
         } else {
-            this.emit(':tell', 'There are currently no guests or hosts.');
+            this.emit(':ask', 'There are currently no guests or hosts.', 'What else can I help you with?');
         }
     },
     'AMAZON.HelpIntent': function () {
@@ -119,5 +116,9 @@ var handlers = {
     },
     'AMAZON.StopIntent': function () {
         this.emit(':tell', this.t("STOP_MESSAGE"));
+    },
+    'Unhandled': function() {
+        var speechOutput = this.t("HELP_MESSAGE");
+        this.emit(':ask', speechOutput, speechOutput);
     }
 };
