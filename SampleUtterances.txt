@@ -8,3 +8,14 @@ GuestListIntent Who is on the guest list
 GuestListIntent Who is on the list
 ClearListsIntent Clear the guest and host lists
 ClearListsIntent Clear the lists
+
+
+
+
+Concerns:
+- Add more sample utterances
+- Confirm input of guests
+- Have a flag of whether the guest has entered the party
+- Be able to clear just the guest list
+- Saying I am a host -> path for setting up the party list
+- Clear a single guest from the list

@@ -1,0 +1,20 @@
+{
+  "name": "skill-bouncer",
+  "version": "1.0.2",
+  "description": "A skill that allows the host to use Alexa like a bouncer for a party",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "bouncer",
+    "party"
+  ],
+  "author": "Jeffrey Sham",
+  "dependencies": {
+    "ask-sdk-core": "^2.7.0",
+    "collections": "~5.0.5"
+  }
+}
